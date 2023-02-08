@@ -1,6 +1,6 @@
 use proc_macro2::{Ident, Span, TokenStream};
 use quote::{format_ident, quote, quote_spanned};
-use syn::{spanned::Spanned, FnArg, ItemFn, Pat, PatIdent, Receiver};
+use syn::{spanned::Spanned, FnArg, ItemFn, Pat, PatIdent, Receiver, ReturnType};
 
 fn positional_arg(i: usize, pat: &Pat) -> Ident {
     let span: Span = syn::spanned::Spanned::span(pat);
@@ -80,13 +80,22 @@ pub(super) fn function(input: ItemFn) -> TokenStream {
     let read_decls: Vec<_> = decls.iter().map(|(_, decl)| decl).collect();
     let fn_name = input.sig.ident.clone();
 
+	let mut invocation = quote!(#fn_name(#(#args),*););
+	if let ReturnType::Type(_, _) = input.sig.output {
+		// TODO decide if explicit `-> ()` should be ignored
+		invocation = quote! {
+			let __result = #invocation
+			#r0_env::commit(&__result);
+		}
+	}
+
     // TODO handle result to commit the data (and handle result patterns)
     let result = quote_spanned! {input.sig.span()=>
         #[cfg(target_os = "zkvm")]
         #[no_mangle]
         fn __main() {
             #(#read_decls)*
-            #fn_name(#(#args),*);
+            #invocation
         }
         #input
     };

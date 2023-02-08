@@ -19,7 +19,8 @@ fn basic_codegen() {
             let basic = #r0_read;
             let reference = #r0_read;
             let __arg2 = #r0_read;
-            some_method(basic, reference, __arg2);
+            let __result = some_method(basic, reference, __arg2);
+			risc0_zkvm::guest::env::commit(&__result);
         }
         #method
     );
