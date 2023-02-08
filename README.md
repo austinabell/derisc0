@@ -25,7 +25,7 @@ fn some_method() {
     let a: u32 = env::read();
     let b: &str = env::read();
     println!("{b}");
-    risc0_zkvm::guest::env::commit(&a);
+    env::commit(&a);
 }
 ```
 
