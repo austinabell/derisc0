@@ -9,8 +9,8 @@ The `entry` annotation can be used on any function with typed parameters and ret
 ```rs
 #[derisc0::entry]
 fn some_method(a: u32, b: &str) -> u32 {
-	println!("{b}");
-	a
+    println!("{b}");
+    a
 }
 ```
 
@@ -22,10 +22,10 @@ use risc0_zkvm::guest::env;
 risc0_zkvm::entry!(some_method);
 
 fn some_method() {
-	let a: u32 = env::read();
-	let b: &str = env::read();
-	println!("{b}");
-	risc0_zkvm::guest::env::commit(&a);
+    let a: u32 = env::read();
+    let b: &str = env::read();
+    println!("{b}");
+    risc0_zkvm::guest::env::commit(&a);
 }
 ```
 
