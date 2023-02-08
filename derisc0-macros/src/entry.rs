@@ -10,25 +10,6 @@ fn positional_arg(i: usize, pat: &Pat) -> Ident {
 }
 
 pub(super) fn function(input: ItemFn) -> TokenStream {
-    // TODO might need this to give better spanned error messages
-    // // If type mismatch occurs, the current rustc points to the last statement.
-    // let (last_stmt_start_span, last_stmt_end_span) = {
-    //     let mut last_stmt = input
-    //         .block
-    //         .stmts
-    //         .last()
-    //         .map(ToTokens::into_token_stream)
-    //         .unwrap_or_default()
-    //         .into_iter();
-    //     // `Span` on stable Rust has a limitation that only points to the first
-    //     // token, not the whole tokens. We can work around this limitation by
-    //     // using the first/last span of the tokens like
-    //     // `syn::Error::new_spanned` does.
-    //     let start = last_stmt.next().map_or_else(Span::call_site, |t| t.span());
-    //     let end = last_stmt.last().map_or(start, |t| t.span());
-    //     (start, end)
-    // };
-
     // TODO pull this into a private module inside derisc
     let r0_env = quote!(risc0_zkvm::guest::env);
     let r0_read = quote!(#r0_env::read());

@@ -1,6 +1,5 @@
 use proc_macro::TokenStream;
 
-
 #[cfg(test)]
 mod tests;
 
