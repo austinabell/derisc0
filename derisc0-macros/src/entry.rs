@@ -11,7 +11,7 @@ fn positional_arg(i: usize, pat: &Pat) -> Ident {
 
 pub(super) fn function(input: ItemFn) -> TokenStream {
     // TODO pull this into a private module inside derisc
-    let r0_env = quote!(risc0_zkvm::guest::env);
+    let r0_env = quote!(derisc0::__private::env);
     let r0_read = quote!(#r0_env::read());
     // TODO abstract this logic
     let decls = input
