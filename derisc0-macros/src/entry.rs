@@ -19,9 +19,7 @@ pub(super) fn function(input: ItemFn) -> TokenStream {
         .iter()
         .enumerate()
         .map(|(i, arg)| match arg {
-            FnArg::Receiver(Receiver {
-                ..
-            }) => {
+            FnArg::Receiver(Receiver { .. }) => {
                 // TODO: see what borks first, or implement if support for impls
                 unreachable!("self parameter cannot be parsed in a pure function");
             }
@@ -39,18 +37,24 @@ pub(super) fn function(input: ItemFn) -> TokenStream {
                     if ident == "self" {
                         unreachable!("self parameter cannot be parsed in a pure function");
                     } else {
-                        (ident.clone(), quote! {
-                            #(#attrs)*
-                            let #mutability #ident = #r0_read;
-                        })
+                        (
+                            ident.clone(),
+                            quote! {
+                                #(#attrs)*
+                                let #mutability #ident = #r0_read;
+                            },
+                        )
                     }
                 } else {
                     let pat = &arg.pat;
                     let ident = positional_arg(i, pat);
-                    (ident.clone(), quote! {
-                        #(#attrs)*
-                        let #ident = #r0_read;
-                    })
+                    (
+                        ident.clone(),
+                        quote! {
+                            #(#attrs)*
+                            let #ident = #r0_read;
+                        },
+                    )
                 }
             }
         })
@@ -60,14 +64,14 @@ pub(super) fn function(input: ItemFn) -> TokenStream {
     let read_decls: Vec<_> = decls.iter().map(|(_, decl)| decl).collect();
     let fn_name = input.sig.ident.clone();
 
-	let mut invocation = quote!(#fn_name(#(#args),*););
-	if let ReturnType::Type(_, _) = input.sig.output {
-		// TODO decide if explicit `-> ()` should be ignored
-		invocation = quote! {
-			let __result = #invocation
-			#r0_env::commit(&__result);
-		}
-	}
+    let mut invocation = quote!(#fn_name(#(#args),*););
+    if let ReturnType::Type(_, _) = input.sig.output {
+        // TODO decide if explicit `-> ()` should be ignored
+        invocation = quote! {
+            let __result = #invocation
+            #r0_env::commit(&__result);
+        }
+    }
 
     // TODO handle result to commit the data (and handle result patterns)
     let result = quote_spanned! {input.sig.span()=>

@@ -11,12 +11,12 @@ fn token_stream_with_error(mut tokens: TokenStream, error: syn::Error) -> TokenS
 }
 
 /// The `#[entry]` attribute can be used to declare the entry point of a risc0 program.
-/// 
+///
 /// This attribute will generate codegen to pull the function parameters from risc0 input, and
 /// use the return value to commit to the receipt of the execution.
-/// 
+///
 /// # Example
-/// 
+///
 /// ```ignore
 /// #[derisc0::entry]
 /// fn some_method(a: u32, b: &str) -> u32 {
@@ -24,12 +24,12 @@ fn token_stream_with_error(mut tokens: TokenStream, error: syn::Error) -> TokenS
 ///     a
 /// }
 /// ```
-/// 
+///
 /// Which is equivalent to:
-/// 
+///
 /// ```ignore
 /// risc0_zkvm::entry!(main);
-/// 
+///
 /// fn some_method() {
 ///     let a: u32 = risc0_zkvm::guest::env::read();
 ///     let b: &str = risc0_zkvm::guest::env::read();
