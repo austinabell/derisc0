@@ -39,7 +39,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: dtolnay/rust-toolchain@stable
-      - run: cargo check
+      - run: cargo check --features std
 
   clippy:
     name: Clippy
