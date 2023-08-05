@@ -21,3 +21,26 @@ macro_rules! all_the_tuples {
 }
 
 pub(crate) use all_the_tuples;
+
+/// Used for defining a main entrypoint.
+///
+/// # Example
+///
+/// ```ignore
+/// derisc0::entry!(main);
+///
+/// fn main() { }
+/// ```
+#[macro_export]
+macro_rules! entry {
+    ($path:ident) => {
+        // Include generated main in a module so we don't conflict
+        // with any other definitions of "main" in this file.
+        mod zkvm_generated_main {
+            #[no_mangle]
+            fn main() {
+                $crate::EntryFn::call(super::$path);
+            }
+        }
+    };
+}

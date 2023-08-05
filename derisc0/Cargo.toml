@@ -7,7 +7,7 @@ edition = "2021"
 std = ["risc0-zkvm/std"]
 
 [dependencies]
-derisc0-macros = { path = "../derisc0-macros" }
+# derisc0-macros = { path = "../derisc0-macros" }
 # TODO unpin this version once the no_std functionality is fixed
 risc0-zkvm = { version = "=0.16.0", default-features = false }
 risc0-zkp = { version = "=0.16.0", default-features = false }
