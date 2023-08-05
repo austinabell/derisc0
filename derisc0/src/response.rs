@@ -40,9 +40,8 @@ pub trait IntoError {
     fn handle_error(self);
 }
 
-// TODO probably don't want this generic impl
-impl<'a, T> IntoError for T where T: AsRef<&'a str> {
-	fn handle_error(self) {
-		risc0_zkvm::guest::abort(self.as_ref());
-	}
+impl<'a> IntoError for &'a str {
+    fn handle_error(self) {
+        risc0_zkvm::guest::abort(self);
+    }
 }
