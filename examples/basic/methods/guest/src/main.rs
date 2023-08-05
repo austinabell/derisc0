@@ -2,12 +2,9 @@
 // If you want to try std support, also update the guest Cargo.toml file
 #![no_std] // std support is experimental
 
-use risc0_zkvm::guest::env;
+use derisc0::Binary;
 
-risc0_zkvm::entry!(some_method);
-
-fn some_method() {
-    let a: u32 = env::read();
-    let b: u32 = env::read();
-    env::commit(&a.checked_mul(b).unwrap());
+#[derisc0::entry]
+fn some_method(a: u32, b: u32) -> Result<Binary<u32>, &'static str> {
+    a.checked_mul(b).map(Binary).ok_or("integer overflow")
 }

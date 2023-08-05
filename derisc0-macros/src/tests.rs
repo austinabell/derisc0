@@ -9,17 +9,17 @@ fn basic_codegen() {
             basic + a
         }
     };
-    let r0_read = quote!(derisc0::__private::env::read());
     let output = super::entry::function(method.clone());
     let expected = quote!(
-        #[cfg(target_os = "zkvm")]
-        #[no_mangle]
-        fn __main() {
-            let basic = #r0_read;
-            let reference = #r0_read;
-            let __arg2 = #r0_read;
-            let __result = some_method(basic, reference, __arg2);
-            derisc0::__private::env::commit(&__result);
+        // Include generated main in a module so we don't conflict
+        // with any other definitions of "main" in this file.
+        // NOTE: This framework is a modified version of risc0_zkvm::entry!(..);
+        mod zkvm_generated_main {
+            #[cfg(target_os = "zkvm")]
+            #[no_mangle]
+            fn main() {
+                derisc0::EntryFn::call(some_method);
+            }
         }
         #method
     );
