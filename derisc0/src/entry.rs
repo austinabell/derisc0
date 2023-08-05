@@ -1,14 +1,14 @@
 use crate::{FromParameter, IntoResponse};
 
-// TODO maybe T generic isn't needed or helpful
-pub trait EntryFn<T> {
+// TODO possibly worth removing generics if possible (unclear if useful)
+pub trait EntryFn<P, R> {
     fn call(self);
 }
 
 macro_rules! impl_entry_fn {
     ( $($ty:ident),* $(,)? ) => {
-        #[allow(non_snake_case, unused_mut)]
-        impl<F, Res, $($ty,)*> EntryFn<($($ty,)*)> for F
+        #[allow(non_snake_case)]
+        impl<F, Res, $($ty,)*> EntryFn<($($ty,)*), Res> for F
         where
             F: FnOnce($($ty,)*) -> Res,
             Res: IntoResponse,
