@@ -1,3 +1,7 @@
+use serde::Serialize;
+
+use crate::IntoResponse;
+
 /// Type indicates a return value that will be serialized by risc0
 /// binary serialization protocol and committed to the journal.
 #[derive(Debug, Clone, Copy, Default)]
@@ -10,11 +14,11 @@ impl<T> From<T> for Commit<T> {
     }
 }
 
-impl IntoResponse for Commit<T>
+impl<T> IntoResponse for Commit<T>
 where
     T: Serialize,
 {
     fn handle_response(self) {
-        risc0_zkvm::guest::env::commit(self.0);
+        risc0_zkvm::guest::env::commit(&self.0);
     }
 }
