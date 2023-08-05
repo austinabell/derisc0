@@ -1,5 +1,5 @@
 #![deny(dead_code, unused_imports, unused_mut)]
-#![no_std]
+#![cfg_attr(not(feature = "std"), no_std)]
 
 // Used by generated code and doc tests. Not public API.
 #[doc(hidden)]
