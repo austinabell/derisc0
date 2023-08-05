@@ -8,12 +8,12 @@ pub mod __private;
 
 pub use derisc0_macros::entry;
 
-mod commit;
+mod binary;
 mod entry;
 mod params;
 mod response;
 
-pub use commit::Commit;
+pub use binary::Binary;
 pub use entry::EntryFn;
 pub use params::FromParameter;
 pub use response::{IntoPanic, IntoResponse};
