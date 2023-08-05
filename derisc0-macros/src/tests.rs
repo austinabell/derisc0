@@ -18,7 +18,7 @@ fn basic_codegen() {
             #[cfg(target_os = "zkvm")]
             #[no_mangle]
             fn main() {
-                derisc0::EntryFn::call(some_method);
+                derisc0::EntryFn::call(super::some_method);
             }
         }
         #method
