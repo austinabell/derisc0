@@ -14,7 +14,7 @@ mod response;
 
 pub use entry::EntryFn;
 pub use params::FromParameter;
-pub use response::{IntoError, IntoResponse};
+pub use response::{IntoPanic, IntoResponse};
 
 #[macro_use]
 pub(crate) mod macros;

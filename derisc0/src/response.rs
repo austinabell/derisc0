@@ -5,12 +5,12 @@ pub trait IntoResponse {
 impl<T, E> IntoResponse for Result<T, E>
 where
     T: IntoResponse,
-    E: IntoError,
+    E: IntoPanic,
 {
     fn handle_response(self) {
         match self {
             Ok(t) => t.handle_response(),
-            Err(e) => e.handle_error(),
+            Err(e) => e.handle_panic(),
         }
     }
 }
@@ -36,12 +36,12 @@ macro_rules! impl_into_response {
 
 crate::macros::all_the_tuples!(impl_into_response);
 
-pub trait IntoError {
-    fn handle_error(self);
+pub trait IntoPanic {
+    fn handle_panic(self) -> !;
 }
 
-impl<'a> IntoError for &'a str {
-    fn handle_error(self) {
-        risc0_zkvm::guest::abort(self);
+impl<'a> IntoPanic for &'a str {
+    fn handle_panic(self) -> ! {
+        risc0_zkvm::guest::abort(self)
     }
 }
