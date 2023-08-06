@@ -1,10 +1,14 @@
 #[cfg(not(feature = "std"))]
 extern crate alloc;
 
-#[cfg(feature = "std")]
-pub use ::std::vec::Vec;
+#[cfg(not(feature = "std"))]
+use alloc::borrow::Cow;
 #[cfg(not(feature = "std"))]
 pub use alloc::vec::Vec;
+#[cfg(feature = "std")]
+pub use std::borrow::Cow;
+#[cfg(feature = "std")]
+pub use std::vec::Vec;
 
 pub trait IntoResponse {
     fn handle_response(self);
@@ -87,5 +91,23 @@ pub trait IntoPanic {
 impl<'a> IntoPanic for &'a str {
     fn handle_panic(self) -> ! {
         risc0_zkvm::guest::abort(self)
+    }
+}
+
+impl IntoPanic for String {
+    fn handle_panic(self) -> ! {
+        self.as_str().handle_panic()
+    }
+}
+
+impl<'a> IntoPanic for Cow<'a, str> {
+    fn handle_panic(self) -> ! {
+        self.as_ref().handle_panic()
+    }
+}
+
+impl IntoPanic for anyhow::Error {
+    fn handle_panic(self) -> ! {
+        self.to_string().as_str().handle_panic()
     }
 }

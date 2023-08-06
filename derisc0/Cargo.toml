@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [features]
-std = ["risc0-zkvm/std"]
+std = ["risc0-zkvm/std", "anyhow/std", "serde/std"]
 
 [dependencies]
 # derisc0-macros = { path = "../derisc0-macros" }
@@ -16,4 +16,5 @@ serde = { version = "1.0", default-features = false, features = [
   "derive",
 ] }
 bytemuck = { version = "1.13", features = ["extern_crate_alloc"] }
+anyhow = { version = "1.0", default-features = false }
 
