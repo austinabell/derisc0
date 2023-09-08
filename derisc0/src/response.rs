@@ -16,6 +16,12 @@ pub trait IntoResponse {
     fn handle_response(self);
 }
 
+impl IntoResponse for () {
+    fn handle_response(self) {
+        // Intentional no-op for returnless functions
+    }
+}
+
 impl IntoResponse for &[u8] {
     fn handle_response(self) {
         risc0_zkvm::guest::env::write_slice(self);
