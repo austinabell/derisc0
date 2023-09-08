@@ -4,16 +4,22 @@ extern crate alloc;
 #[cfg(not(feature = "std"))]
 use alloc::borrow::Cow;
 #[cfg(not(feature = "std"))]
+use alloc::string::ToString;
+#[cfg(not(feature = "std"))]
 use alloc::vec::Vec;
 #[cfg(feature = "std")]
 use std::borrow::Cow;
 #[cfg(feature = "std")]
 use std::vec::Vec;
-#[cfg(not(feature = "std"))]
-use alloc::string::ToString;
 
 pub trait IntoResponse {
     fn handle_response(self);
+}
+
+impl IntoResponse for () {
+    fn handle_response(self) {
+        // Intentional no-op
+    }
 }
 
 impl IntoResponse for &[u8] {
