@@ -2,29 +2,24 @@
 // is `multiply`, replace `METHOD_NAME_ELF` with `MULTIPLY_ELF` and replace
 // `METHOD_NAME_ID` with `MULTIPLY_ID`
 use methods::{METHOD_NAME_ELF, METHOD_NAME_ID};
-use risc0_zkvm::{
-    serde::{from_slice, to_vec},
-    Executor, ExecutorEnv,
-};
+use risc0_zkvm::{default_prover, ExecutorEnv};
 
 fn main() {
     let env = ExecutorEnv::builder()
         // Send a & b to the guest
-        .add_input(&to_vec(&3).unwrap())
-        .add_input(&to_vec(&4).unwrap())
+        .write(&3)
+        .unwrap()
+        .write(&4)
+        .unwrap()
         .build()
         .unwrap();
 
-    // Next, we make an executor, loading the (renamed) ELF binary.
-    let mut exec = Executor::from_elf(env, METHOD_NAME_ELF).unwrap();
+    // Obtain the default prover.
+    let prover = default_prover();
 
-    // Run the executor to produce a session.
-    let session = exec.run().unwrap();
+    let receipt = prover.prove_elf(env, METHOD_NAME_ELF).unwrap();
 
-    // Prove the session to produce a receipt.
-    let receipt = session.prove().unwrap();
-
-    let c: u32 = from_slice(&receipt.journal).expect(
+    let c: u32 = receipt.journal.decode().expect(
         "Journal output should deserialize into the same types (& order) that it was written",
     );
     assert_eq!(c, 12);

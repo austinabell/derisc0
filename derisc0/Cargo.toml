@@ -8,9 +8,8 @@ std = ["risc0-zkvm/std", "anyhow/std", "serde/std"]
 
 [dependencies]
 # derisc0-macros = { path = "../derisc0-macros" }
-# TODO unpin this version once the no_std functionality is fixed
-risc0-zkvm = { version = "0.17.0", default-features = false }
-risc0-zkp = { version = "0.17.0", default-features = false }
+risc0-zkvm = { version = "0.19.0", default-features = false }
+risc0-zkp = { version = "0.19.0", default-features = false }
 serde = { version = "1.0", default-features = false, features = [
   "alloc",
   "derive",

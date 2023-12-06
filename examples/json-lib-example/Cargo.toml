@@ -10,8 +10,7 @@ serde = { version = "1.0", default-features = false, features = [
 	"derive",
 ] }
 serde_json = { version = "1.0", default-features = false, features = ["alloc", "std"] }
-# TODO unpin this version once the no_std functionality is fixed
-risc0-zkvm = { version = "0.17", default-features = false, features = ["std"] }
-risc0-zkp = { version = "=0.17", default-features = false }
+risc0-zkvm = { version = "0.19", default-features = false, features = ["std"] }
+risc0-zkp = { version = "0.19", default-features = false }
 
 [workspace]
